@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"testing"
 	"io/ioutil"
+	"bytes"
 	"github.com/stretchr/testify/assert"
 	"github.com/getupandgo/snooper-wooper/mock"
 )
@@ -49,7 +50,10 @@ func TestLimitTokensRetrieval(t *testing.T) {
 }
 
 func TestTokenCreation (t *testing.T) {
-	request, _ := http.NewRequest("POST", "/tokens", nil)
+	newToken := mock.Token{"dog", 1}
+	encoded, _ := json.Marshal(newToken)
+
+	request, _ := http.NewRequest("POST", "/tokens", bytes.NewReader(encoded))
 	response := httptest.NewRecorder()
 
 	InitRouter().ServeHTTP(response, request)

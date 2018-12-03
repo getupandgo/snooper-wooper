@@ -63,3 +63,7 @@ func GetTokens(limit uint64) []Token {
 
 	return tokens[:limit]
 }
+
+func SaveToken(newToken Token) bool {
+	return true
+}

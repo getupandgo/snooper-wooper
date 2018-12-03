@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"github.com/gorilla/mux"
 	"strconv"
+	"io/ioutil"
 	"encoding/json"
 	"github.com/getupandgo/snooper-wooper/mock"
 )
@@ -23,7 +23,17 @@ func GetTokens (w http.ResponseWriter, request *http.Request) {
 }
 
 func SaveTokens (w http.ResponseWriter, request *http.Request) {
+	body, err := ioutil.ReadAll(request.Body)
+	if err != nil {
+		http.Error(w, "can't read body", http.StatusBadRequest)
+		return
+	}
 
+	newToken := mock.Token{}
+	_ = json.Unmarshal(body, &newToken)
+
+	mock.SaveToken(newToken)
+	w.WriteHeader(200)
 }
 
 func InitRouter () (*mux.Router) {
@@ -37,8 +47,6 @@ func InitRouter () (*mux.Router) {
 
 func main () {
 	router := InitRouter()
-	
-	fmt.Println("Hello Vanya")
 	
 	http.ListenAndServe(":8000", router)
 }
