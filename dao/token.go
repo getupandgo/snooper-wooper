@@ -1,5 +1,6 @@
 package dao
 
+//go:generate mockgen -destination=../mock/token.go -package=dao github.com/getupandgo/snooper-wooper/dao TokensDao
 import (
 	"github.com/jinzhu/gorm"
 

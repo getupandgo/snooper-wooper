@@ -1,59 +1,59 @@
 package mock
 
 type Token struct {
-	Text string
+	Text  string
 	Count uint32
 }
 
-var tokens = []Token { 
-    {
-        "Vanya",
-        50,
-    },
-    {
+var tokens = []Token{
+	{
+		"Vanya",
+		50,
+	},
+	{
 		"soset",
-        30,
+		30,
 	},
 	{
 		"pisos",
-        25,
+		25,
 	},
 	{
 		"big",
-        20,
+		20,
 	},
 	{
 		"black",
-        18,
+		18,
 	},
 	{
 		"white",
-        15,
+		15,
 	},
 	{
 		"seven",
-        14,
+		14,
 	},
 	{
 		"eight",
-        12,
+		12,
 	},
 	{
 		"ten",
-        10,
+		10,
 	},
 	{
 		"eleven",
-        9,
+		9,
 	},
 	{
 		"twelve",
-        98,
+		98,
 	},
 	{
 		"thirteen",
-        7,
-    },
+		7,
+	},
 }
 
 func GetTokens(limit uint64) []Token {
@@ -67,3 +67,5 @@ func GetTokens(limit uint64) []Token {
 func SaveToken(newToken Token) bool {
 	return true
 }
+
+//todo: move to gomock
