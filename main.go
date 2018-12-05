@@ -1,19 +1,28 @@
 package main
 
 import (
-	"net/http"
-	"github.com/gorilla/mux"
-	"strconv"
-	"io/ioutil"
 	"encoding/json"
+	"io/ioutil"
+	"net/http"
+	"strconv"
+
+	"github.com/gorilla/mux"
+	//"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
+
+	"github.com/getupandgo/snooper-wooper/dao"
 	"github.com/getupandgo/snooper-wooper/mock"
 )
 
-func GetTokens (w http.ResponseWriter, request *http.Request) {
+type ctx struct {
+	TokenDS dao.TokensDAO
+}
+
+func (c *ctx) GetTokens(w http.ResponseWriter, request *http.Request) {
 	rawValue := request.URL.Query().Get("limit")
 
 	limitNum, _ := strconv.ParseUint(rawValue, 0, 32)
-	
+
 	tokens := mock.GetTokens(limitNum)
 
 	data, _ := json.Marshal(tokens)
@@ -22,7 +31,7 @@ func GetTokens (w http.ResponseWriter, request *http.Request) {
 	w.Write(data)
 }
 
-func SaveTokens (w http.ResponseWriter, request *http.Request) {
+func (c *ctx) SaveTokens(w http.ResponseWriter, request *http.Request) {
 	body, err := ioutil.ReadAll(request.Body)
 	if err != nil {
 		http.Error(w, "can't read body", http.StatusBadRequest)
@@ -36,17 +45,23 @@ func SaveTokens (w http.ResponseWriter, request *http.Request) {
 	w.WriteHeader(200)
 }
 
-func InitRouter () (*mux.Router) {
+func InitRouter(c *ctx) *mux.Router {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/tokens", GetTokens).Methods("GET")
-	router.HandleFunc("/tokens", SaveTokens).Methods("POST")
+	router.HandleFunc("/tokens", c.GetTokens).Methods("GET")
+	router.HandleFunc("/tokens", c.SaveTokens).Methods("POST")
 
 	return router
 }
 
-func main () {
+func main() {
+	// creaet context struct and connect methods to it
+	context := ctx{}
+	token_dao, _ := dao.Connect()
+
+	context
+
 	router := InitRouter()
-	
+
 	http.ListenAndServe(":8000", router)
 }

@@ -1,0 +1,12 @@
+version: '2'
+services:
+   
+    postgres-snoop:
+      container_name: postgres-snoop
+      image: postgres:10
+      restart: always
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+      ports:
+        - "5432:5432"
