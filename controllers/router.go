@@ -1,14 +1,19 @@
 package controllers
 
-//
-//import "github.com/gin-gonic/gin"
-//
-//func InitRouter(c *ctx) *gin.Engine {
-//	router := gin.Default()
-//
-//	//todo: implement partial routers?
-//	router.GET("/tokens", c.GetTokens)
-//	router.POST("/tokens", c.SaveTokens)
-//
-//	return router
-//}
+import (
+	"github.com/gin-gonic/gin"
+
+	"github.com/getupandgo/snooper-wooper/controllers/token"
+	"github.com/getupandgo/snooper-wooper/dao"
+)
+
+func InitRouter(d dao.TokensDao) *gin.Engine {
+	tokensCtrl := token.New(d)
+
+	r := gin.New()
+	tokensRouter := r.Group("/tokens")
+	tokensRouter.GET("", tokensCtrl.GetTopTokens)
+	tokensRouter.POST("", tokensCtrl.UpsertToken)
+
+	return r
+}
