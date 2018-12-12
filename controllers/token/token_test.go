@@ -24,7 +24,7 @@ func TestDefaultTokensRetrieval(t *testing.T) {
 
 	x := dao.NewMockTokensDao(ctrl)
 
-	x.EXPECT().GetTokens(uint64(10)).Return(dao.SampleTokens[:10], nil).Times(1)
+	x.EXPECT().GetTopTokens(uint64(10)).Return(dao.SampleTokens[:10], nil).Times(1)
 
 	controllers.InitRouter(x).ServeHTTP(response, request)
 
@@ -50,7 +50,7 @@ func TestLimitTokensRetrieval(t *testing.T) {
 
 	x := dao.NewMockTokensDao(ctrl)
 
-	x.EXPECT().GetTokens(uint64(11)).Return(dao.SampleTokens[:11], nil)
+	x.EXPECT().GetTopTokens(uint64(11)).Return(dao.SampleTokens[:11], nil)
 
 	controllers.InitRouter(x).ServeHTTP(response, request)
 

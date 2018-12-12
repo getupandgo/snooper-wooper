@@ -21,7 +21,7 @@ func New(dao dao.TokensDao) TokenController {
 
 func (ctrl TokenController) GetTopTokens(c *gin.Context) {
 	limit, _ := strconv.ParseUint(c.DefaultQuery("limit", defaultLimit), 10, 64)
-	tokens, _ := ctrl.tokens.GetTokens(limit)
+	tokens, _ := ctrl.tokens.GetTopTokens(limit)
 	c.JSON(http.StatusOK, tokens)
 }
 

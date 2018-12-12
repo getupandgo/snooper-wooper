@@ -33,17 +33,17 @@ func (m *MockTokensDao) EXPECT() *MockTokensDaoMockRecorder {
 	return m.recorder
 }
 
-// GetTokens mocks base method
-func (m *MockTokensDao) GetTokens(arg0 uint64) ([]models.Token, error) {
-	ret := m.ctrl.Call(m, "GetTokens", arg0)
+// GetTopTokens mocks base method
+func (m *MockTokensDao) GetTopTokens(arg0 uint64) ([]models.Token, error) {
+	ret := m.ctrl.Call(m, "GetTopTokens", arg0)
 	ret0, _ := ret[0].([]models.Token)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetTokens indicates an expected call of GetTokens
-func (mr *MockTokensDaoMockRecorder) GetTokens(arg0 interface{}) *gomock.Call {
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTokens", reflect.TypeOf((*MockTokensDao)(nil).GetTokens), arg0)
+// GetTopTokens indicates an expected call of GetTopTokens
+func (mr *MockTokensDaoMockRecorder) GetTopTokens(arg0 interface{}) *gomock.Call {
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTopTokens", reflect.TypeOf((*MockTokensDao)(nil).GetTopTokens), arg0)
 }
 
 // SaveToken mocks base method

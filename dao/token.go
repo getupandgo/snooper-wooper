@@ -10,7 +10,7 @@ import (
 type (
 	TokensDao interface {
 		SaveToken(t *models.Token) (*models.Token, error)
-		GetTokens(limit uint64) ([]models.Token, error)
+		GetTopTokens(limit uint64) ([]models.Token, error)
 	}
 
 	tokensDao struct {
@@ -31,9 +31,9 @@ func (dao tokensDao) SaveToken(t *models.Token) (*models.Token, error) {
 	return t, nil
 }
 
-func (dao tokensDao) GetTokens(limit uint64) ([]models.Token, error) {
+func (dao tokensDao) GetTopTokens(limit uint64) ([]models.Token, error) {
 	tokens := make([]models.Token, limit)
-	if err := dao.db.Limit(limit).Find(&tokens).Error; err != nil {
+	if err := dao.db.Order("count DESC").Limit(limit).Find(&tokens).Error; err != nil {
 		return nil, err
 	}
 	return tokens, nil
