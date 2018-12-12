@@ -1,6 +1,7 @@
 package dao
 
 //go:generate mockgen -destination=../mock/token.go -package=dao github.com/getupandgo/snooper-wooper/dao TokensDao
+
 import (
 	"github.com/jinzhu/gorm"
 
@@ -9,7 +10,9 @@ import (
 
 type (
 	TokensDao interface {
-		SaveToken(t *models.Token) (*models.Token, error)
+		FindToken(text string) (*models.Token, error)
+		CreateToken(t *models.Token) (*models.Token, error)
+		UpdateToken(t *models.Token) (*models.Token, error)
 		GetTopTokens(limit uint64) ([]models.Token, error)
 	}
 
@@ -18,14 +21,23 @@ type (
 	}
 )
 
-func (dao tokensDao) SaveToken(t *models.Token) (*models.Token, error) {
-	tmp := &models.Token{}
-	if err := dao.db.FirstOrCreate(tmp, models.Token{Text: t.Text}).Error; err != nil {
+func (dao tokensDao) CreateToken(t *models.Token) (*models.Token, error) {
+	if err := dao.db.Create(t).Error; err != nil {
 		return nil, err
 	}
-	// fixme: this is a wrong place for "business logic"
-	tmp.Count += t.Count
-	if err := dao.db.Save(tmp).Error; err != nil {
+	return t, nil
+}
+
+func (dao tokensDao) FindToken(text string) (*models.Token, error) {
+	found := &models.Token{}
+	if err := dao.db.Where("text = ?", text).First(found).Error; err != nil {
+		return nil, err
+	}
+	return found, nil
+}
+
+func (dao tokensDao) UpdateToken(t *models.Token) (*models.Token, error) {
+	if err := dao.db.Save(t).Error; err != nil {
 		return nil, err
 	}
 	return t, nil

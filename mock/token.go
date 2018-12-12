@@ -33,6 +33,32 @@ func (m *MockTokensDao) EXPECT() *MockTokensDaoMockRecorder {
 	return m.recorder
 }
 
+// CreateToken mocks base method
+func (m *MockTokensDao) CreateToken(arg0 *models.Token) (*models.Token, error) {
+	ret := m.ctrl.Call(m, "CreateToken", arg0)
+	ret0, _ := ret[0].(*models.Token)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateToken indicates an expected call of CreateToken
+func (mr *MockTokensDaoMockRecorder) CreateToken(arg0 interface{}) *gomock.Call {
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateToken", reflect.TypeOf((*MockTokensDao)(nil).CreateToken), arg0)
+}
+
+// FindToken mocks base method
+func (m *MockTokensDao) FindToken(arg0 string) (*models.Token, error) {
+	ret := m.ctrl.Call(m, "FindToken", arg0)
+	ret0, _ := ret[0].(*models.Token)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindToken indicates an expected call of FindToken
+func (mr *MockTokensDaoMockRecorder) FindToken(arg0 interface{}) *gomock.Call {
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindToken", reflect.TypeOf((*MockTokensDao)(nil).FindToken), arg0)
+}
+
 // GetTopTokens mocks base method
 func (m *MockTokensDao) GetTopTokens(arg0 uint64) ([]models.Token, error) {
 	ret := m.ctrl.Call(m, "GetTopTokens", arg0)
@@ -46,15 +72,15 @@ func (mr *MockTokensDaoMockRecorder) GetTopTokens(arg0 interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTopTokens", reflect.TypeOf((*MockTokensDao)(nil).GetTopTokens), arg0)
 }
 
-// SaveToken mocks base method
-func (m *MockTokensDao) SaveToken(arg0 *models.Token) (*models.Token, error) {
-	ret := m.ctrl.Call(m, "SaveToken", arg0)
+// UpdateToken mocks base method
+func (m *MockTokensDao) UpdateToken(arg0 *models.Token) (*models.Token, error) {
+	ret := m.ctrl.Call(m, "UpdateToken", arg0)
 	ret0, _ := ret[0].(*models.Token)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// SaveToken indicates an expected call of SaveToken
-func (mr *MockTokensDaoMockRecorder) SaveToken(arg0 interface{}) *gomock.Call {
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SaveToken", reflect.TypeOf((*MockTokensDao)(nil).SaveToken), arg0)
+// UpdateToken indicates an expected call of UpdateToken
+func (mr *MockTokensDaoMockRecorder) UpdateToken(arg0 interface{}) *gomock.Call {
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateToken", reflect.TypeOf((*MockTokensDao)(nil).UpdateToken), arg0)
 }
