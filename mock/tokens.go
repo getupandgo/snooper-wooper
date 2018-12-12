@@ -1,71 +1,54 @@
-package mock
+package dao
 
-type Token struct {
-	Text  string
-	Count uint32
-}
+import "github.com/getupandgo/snooper-wooper/models"
 
-var tokens = []Token{
+var SampleTokens = []models.Token{
 	{
-		"Vanya",
-		50,
+		Text:  "Vanya",
+		Count: 50,
 	},
 	{
-		"soset",
-		30,
+		Text:  "soset",
+		Count: 30,
 	},
 	{
-		"pisos",
-		25,
+		Text:  "pisos",
+		Count: 25,
 	},
 	{
-		"big",
-		20,
+		Text:  "big",
+		Count: 20,
 	},
 	{
-		"black",
-		18,
+		Text:  "black",
+		Count: 18,
 	},
 	{
-		"white",
-		15,
+		Text:  "white",
+		Count: 15,
 	},
 	{
-		"seven",
-		14,
+		Text:  "seven",
+		Count: 14,
 	},
 	{
-		"eight",
-		12,
+		Text:  "eight",
+		Count: 12,
 	},
 	{
-		"ten",
-		10,
+		Text:  "ten",
+		Count: 10,
 	},
 	{
-		"eleven",
-		9,
+		Text:  "eleven",
+		Count: 9,
 	},
 	{
-		"twelve",
-		98,
+		Text:  "twelve",
+		Count: 98,
 	},
 	{
-		"thirteen",
-		7,
+		Text:  "thirteen",
+		Count: 7,
 	},
 }
-
-func GetTokens(limit uint64) []Token {
-	if limit == 0 {
-		limit = 10
-	}
-
-	return tokens[:limit]
-}
-
-func SaveToken(newToken Token) bool {
-	return true
-}
-
-//todo: move to gomock
