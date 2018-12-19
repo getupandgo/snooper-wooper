@@ -1,1 +1,4 @@
-W00t!
+#### Running locally
+```bash
+docker-compose up
+```

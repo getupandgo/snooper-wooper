@@ -1,6 +1,7 @@
 readme.md
 .gitignore
 .git
+config
 .idea
 Dockerfile
 docker-compose.yml
