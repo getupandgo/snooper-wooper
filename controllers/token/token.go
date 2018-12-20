@@ -2,7 +2,6 @@ package token
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -11,19 +10,28 @@ import (
 	"github.com/getupandgo/snooper-wooper/models"
 )
 
-const defaultLimit = "10"
+type (
+	TokenController struct {
+		tokens dao.TokensDao
+	}
 
-type TokenController struct {
-	tokens dao.TokensDao
-}
+	tokensQueryString struct {
+		Limit uint64 `form:"limit,default=10"`
+	}
+)
 
 func New(dao dao.TokensDao) TokenController {
 	return TokenController{dao}
 }
 
 func (ctrl TokenController) GetTopTokens(c *gin.Context) {
-	limit, _ := strconv.ParseUint(c.DefaultQuery("limit", defaultLimit), 10, 64)
-	tokens, _ := ctrl.tokens.GetTopTokens(limit)
+	query := &tokensQueryString{}
+	if err := c.BindQuery(query); err != nil {
+		c.Error(err)
+		return
+	}
+
+	tokens, _ := ctrl.tokens.GetTopTokens(query.Limit)
 	c.JSON(http.StatusOK, tokens)
 }
 
