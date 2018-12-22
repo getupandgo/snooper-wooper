@@ -14,8 +14,7 @@ type (
 	TokenController struct {
 		tokens dao.TokensDao
 	}
-
-	tokensQueryString struct {
+	GetTopTokensQueryString struct {
 		Limit uint64 `form:"limit,default=10"`
 	}
 )
@@ -25,20 +24,25 @@ func New(dao dao.TokensDao) TokenController {
 }
 
 func (ctrl TokenController) GetTopTokens(c *gin.Context) {
-	query := &tokensQueryString{}
+	query := &GetTopTokensQueryString{}
 	if err := c.BindQuery(query); err != nil {
 		c.Error(err)
 		return
 	}
 
-	tokens, _ := ctrl.tokens.GetTopTokens(query.Limit)
-	c.JSON(http.StatusOK, tokens)
+	if tokens, err := ctrl.tokens.GetTopTokens(query.Limit); err != nil {
+		c.Error(err)
+		return
+	} else {
+		c.JSON(http.StatusOK, tokens)
+	}
 }
 
 func (ctrl TokenController) UpsertToken(c *gin.Context) {
 	token := &models.Token{}
 	if err := c.ShouldBindJSON(token); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.Error(err)
+		return
 	}
 	t, err := ctrl.tokens.FindToken(token.Text)
 	if err != nil {
