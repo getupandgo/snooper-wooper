@@ -20,6 +20,7 @@ require (
 	github.com/mattn/go-sqlite3 v1.10.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.1 // indirect
+	github.com/rs/zerolog v1.11.0
 	github.com/spf13/viper v1.3.1
 	github.com/stretchr/testify v1.2.2
 	github.com/ugorji/go/codec v0.0.0-20181209151446-772ced7fd4c2 // indirect
