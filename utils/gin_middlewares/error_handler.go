@@ -18,25 +18,40 @@ func AppErrorReporter() gin.HandlerFunc {
 
 		controllerError := c.Errors.Last()
 
-		var formattedError Error
-		switch controllerError.Type {
-		case gin.ErrorTypePublic:
-			log.Info().Err(controllerError).Msg("")
-			formattedError = Error{http.StatusBadRequest, controllerError.Error()}
-		case gin.ErrorTypeBind:
-			log.Info().Err(controllerError).Msg("")
-			formattedError = Error{http.StatusBadRequest, "Invalid param"}
-		case gin.ErrorTypePrivate:
-			log.Error().Err(controllerError).Msg("")
-			formattedError = Error{http.StatusInternalServerError, "Server error"}
-		default:
-			log.Error().
-				Err(controllerError).
-				Msgf("Unhandled error")
+		if controllerError != nil {
+			var formattedError Error
 
-			formattedError = Error{http.StatusInternalServerError, "Server error"}
+			switch controllerError.Type {
+			case gin.ErrorTypePublic:
+				log.Info().
+					Err(controllerError).
+					Msg("")
+
+				formattedError = Error{http.StatusBadRequest, controllerError.Error()}
+
+			case gin.ErrorTypeBind:
+				log.Info().
+					Err(controllerError).
+					Msg("")
+
+				formattedError = Error{http.StatusBadRequest, "Invalid param"}
+
+			case gin.ErrorTypePrivate:
+				log.Error().
+					Err(controllerError).
+					Msg("")
+
+				formattedError = Error{http.StatusInternalServerError, "Server error"}
+
+			default:
+				log.Error().
+					Err(controllerError).
+					Msg("Unhandled error")
+
+				formattedError = Error{http.StatusInternalServerError, "Server error"}
+			}
+
+			c.AbortWithStatusJSON(formattedError.Status, formattedError.Message)
 		}
-
-		c.AbortWithStatusJSON(formattedError.Status, formattedError.Message)
 	}
 }
