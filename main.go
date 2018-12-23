@@ -25,7 +25,7 @@ func main() {
 	if err != nil {
 		log.Fatal().
 			Err(err).
-			Msgf("Failed to init database with error %+v", err)
+			Msgf("Failed to init database")
 	}
 
 	if !conf.GetBool("http_debug") {
@@ -40,6 +40,6 @@ func main() {
 	if err = r.Run(fmt.Sprintf(":%d", httpPort)); err != nil {
 		log.Fatal().
 			Err(err).
-			Msgf("Failed to start server", err)
+			Msg("Failed to start server")
 	}
 }
