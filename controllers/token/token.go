@@ -26,7 +26,6 @@ func New(dao dao.TokensDao) TokenController {
 func (ctrl TokenController) GetTopTokens(c *gin.Context) {
 	query := &GetTopTokensQueryString{}
 	if err := c.BindQuery(query); err != nil {
-		c.Error(err)
 		return
 	}
 
@@ -40,10 +39,11 @@ func (ctrl TokenController) GetTopTokens(c *gin.Context) {
 
 func (ctrl TokenController) UpsertToken(c *gin.Context) {
 	token := &models.Token{}
-	if err := c.ShouldBindJSON(token); err != nil {
-		c.Error(err)
+
+	if err := c.BindJSON(token); err != nil {
 		return
 	}
+
 	t, err := ctrl.tokens.FindToken(token.Text)
 	if err != nil {
 		if err != gorm.ErrRecordNotFound {
