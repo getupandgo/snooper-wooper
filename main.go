@@ -18,14 +18,14 @@ func main() {
 	if err != nil {
 		log.Fatal().
 			Err(err).
-			Msgf("Failed to get configuration file")
+			Msg("Failed to get configuration file")
 	}
 
 	db, err := connectors.InitDB(conf)
 	if err != nil {
 		log.Fatal().
 			Err(err).
-			Msgf("Failed to init database")
+			Msg("Failed to init database")
 	}
 
 	if !conf.GetBool("http_debug") {
@@ -35,11 +35,12 @@ func main() {
 	r := controllers.InitRouter(dao.NewTokensDao(db))
 
 	httpPort := conf.GetInt("http_port")
-	log.Info().Msg(fmt.Sprintf("starting API server on port %d", httpPort))
 
 	if err = r.Run(fmt.Sprintf(":%d", httpPort)); err != nil {
 		log.Fatal().
 			Err(err).
 			Msg("Failed to start server")
 	}
+
+	log.Info().Msgf("starting API server on port %d", httpPort)
 }
