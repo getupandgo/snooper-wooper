@@ -4,7 +4,7 @@ COPY go.mod go.sum /src/
 WORKDIR /src
 
 RUN GO111MODULE=on go mod download
-# Build all binaries, with -getmode=local, this will _not_ fetch packages over the network.
+
 COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -o app
 

@@ -1,0 +1,28 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.11
+        environment:
+          GO111MODULE: "on"
+          GIN_MODE: "release"
+          TEST_RESULTS: /tmp/test-results
+    working_directory: /go/src/github.com/getupandgo/snooper-wooper
+    steps:
+      - checkout
+      - run: mkdir -p $TEST_RESULTS
+      - restore_cache:
+            keys:
+              - go-mod-v1-{{ checksum "go.sum" }}
+#      - run: go get -t github.com/jstemmer/go-junit-report
+      - run: go mod download
+      - run:
+          name: Run unit tests
+          command: |
+            make test | tee ${TEST_RESULTS}/go-test.out
+      - save_cache:
+          key: go-mod-v1-{{ checksum "go.sum" }}
+          paths:
+            - "/go/pkg/mod"
+      - store_test_results:
+          path: /tmp/test-results
