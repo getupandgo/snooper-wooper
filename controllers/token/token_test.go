@@ -8,11 +8,13 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/getupandgo/snooper-wooper/controllers"
-	"github.com/getupandgo/snooper-wooper/mock"
-	"github.com/getupandgo/snooper-wooper/models"
 	"github.com/golang/mock/gomock"
+	"github.com/jinzhu/gorm"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/getupandgo/snooper-wooper/controllers"
+	dao "github.com/getupandgo/snooper-wooper/mock"
+	"github.com/getupandgo/snooper-wooper/models"
 )
 
 func TestDefaultTokensRetrieval(t *testing.T) {
@@ -77,12 +79,11 @@ func TestTokenCreation(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	x := dao.NewMockTokensDao(ctrl)
+	daoMock := dao.NewMockTokensDao(ctrl)
+	daoMock.EXPECT().FindToken(gomock.Any()).Return(nil, gorm.ErrRecordNotFound)
+	daoMock.EXPECT().CreateToken(gomock.Any()).Return(&newToken, nil)
 
-	// FIXME: no any pass here
-	x.EXPECT().SaveToken(gomock.Any()).Return(&newToken, nil)
-
-	controllers.InitRouter(x).ServeHTTP(response, request)
+	controllers.InitRouter(daoMock).ServeHTTP(response, request)
 
 	assert.Equal(t, 200, response.Code, "Ok is expected")
 }

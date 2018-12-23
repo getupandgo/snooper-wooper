@@ -14,38 +14,37 @@ type Error struct {
 
 func AppErrorReporter() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		// try
 		c.Next()
-
-		controllerError := c.Errors.Last()
-
-		if controllerError != nil {
+		// catch
+		if err := c.Errors.Last(); err != nil {
 			var formattedError Error
 
-			switch controllerError.Type {
+			switch err.Type {
 			case gin.ErrorTypePublic:
 				log.Info().
-					Err(controllerError).
+					Err(err).
 					Msg("")
 
-				formattedError = Error{http.StatusBadRequest, controllerError.Error()}
+				formattedError = Error{http.StatusBadRequest, err.Error()}
 
 			case gin.ErrorTypeBind:
 				log.Info().
-					Err(controllerError).
+					Err(err).
 					Msg("")
 
 				formattedError = Error{http.StatusBadRequest, "Invalid param"}
 
 			case gin.ErrorTypePrivate:
 				log.Error().
-					Err(controllerError).
+					Err(err).
 					Msg("")
 
 				formattedError = Error{http.StatusInternalServerError, "Server error"}
 
 			default:
 				log.Error().
-					Err(controllerError).
+					Err(err).
 					Msg("Unhandled error")
 
 				formattedError = Error{http.StatusInternalServerError, "Server error"}
